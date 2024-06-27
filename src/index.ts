@@ -1,11 +1,15 @@
 import express from "express";
 import prisma from "./lib/prismaClient";
-
-
 import type { Express, Request, Response } from "express";
+import cors from "cors"
+
 
 const app: Express = express();
 const PORT = 8080;
+
+app.use(express.json())
+app.use(cors())
+
 
 app.get("/getFloorData", async (req: Request, res: Response) => {
     try {
