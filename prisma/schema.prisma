@@ -13,80 +13,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Floor2 {
+model Floor {
+  id          Int    @id @default(autoincrement())
+  floorNumber Int @unique
+  rooms        Room[]
+}
+
+model Room {
   id         Int    @id @default(autoincrement())
   roomNumber String
   roomState  String
-}
-
-model Floor3 {
-  id         Int    @id @default(autoincrement())
-  roomNumber String
-  roomState  String
-}
-
-model Floor4 {
-  id         Int     @id @default(autoincrement())
-  roomNumber String
-  roomState  String
-}
-
-model Floor5 {
-  id         Int     @id @default(autoincrement())
-  roomNumber String
-  roomState  String
-}
-
-model Floor6 {
-  id         Int     @id @default(autoincrement())
-  roomNumber String
-  roomState  String
-}
-
-model Floor7 {
-  id         Int     @id @default(autoincrement())
-  roomNumber String
-  roomState  String
-}
-
-model Floor8 {
-  id         Int     @id @default(autoincrement())
-  roomNumber String
-  roomState  String
-}
-
-model Floor9 {
-  id         Int     @id @default(autoincrement())
-  roomNumber String
-  roomState  String
-}
-
-model Floor10 {
-  id         Int     @id @default(autoincrement())
-  roomNumber String
-  roomState  String
-}
-
-model Floor11 {
-  id         Int     @id @default(autoincrement())
-  roomNumber String
-  roomState  String
-}
-
-model Floor12 {
-  id         Int     @id @default(autoincrement())
-  roomNumber String
-  roomState  String
-}
-
-model Floor13 {
-  id         Int     @id @default(autoincrement())
-  roomNumber String
-  roomState  String
-}
-
-model Floor14 {
-  id         Int     @id @default(autoincrement())
-  roomNumber String
-  roomState  String
+  floor      Floor  @relation(fields: [floorId], references: [floorNumber])
+  floorId     Int
 }
