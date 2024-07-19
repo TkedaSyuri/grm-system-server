@@ -9,22 +9,6 @@ const PORT = 8080;
 app.use(express.json());
 app.use(cors());
 
-// app.get("/getFloorData/:floorNumber", async (req: Request, res: Response) => {
-//   const { floorNumber } = req.params;
-//   try {
-//     const floorData = await prisma.room.findMany({
-//       where: {
-//         floorId: parseInt(floorNumber)
-//       },
-//       orderBy: { roomNumber: "asc" },
-//     });
-//     return res.json(floorData);
-//   } catch (err) {
-//     console.log(err);
-//     res.status(500).json({ messge: "サーバーエラー" });
-//   }
-// });
-
 app.get("/getFloorData/:floorNumber", async (req: Request, res: Response) => {
   const { floorNumber } = req.params;
   try {
@@ -45,6 +29,24 @@ app.get("/getFloorData/:floorNumber", async (req: Request, res: Response) => {
     res.status(500).json({ messge: "サーバーエラー" });
   }
 });
+
+
+// app.get("/getFloorData/:floorNumber", async (req: Request, res: Response) => {
+//   const { floorNumber } = req.params;
+//   try {
+//     const floorData = await prisma.room.findMany({
+//       where: {
+//         floorId: parseInt(floorNumber)
+//       },
+//       orderBy: { roomNumber: "asc" },
+//     });
+//     return res.json(floorData);
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).json({ messge: "サーバーエラー" });
+//   }
+// });
+
 
 
 app.listen(PORT, () => {
