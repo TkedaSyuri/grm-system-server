@@ -30,10 +30,12 @@ app.get("/getFloorData/:floorNumber", async (req: Request, res: Response) => {
   try {
     const floorData = await prisma.floor.findUnique({
       where: {
-        floorNumber: parseInt(floorNumber)
+        floorNumber: parseInt(floorNumber),
       },
       include: {
-        rooms: true
+        rooms: {
+          orderBy: {id: "asc"},
+        }
       },
     });
     const roomData = floorData?.rooms
