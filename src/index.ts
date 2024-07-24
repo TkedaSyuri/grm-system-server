@@ -9,6 +9,8 @@ const PORT = 8080;
 app.use(express.json());
 app.use(cors());
 
+
+//各階のデータを取得するapi
 app.get("/getFloorData/:floorNumber", async (req: Request, res: Response) => {
   const { floorNumber } = req.params;
   try {
@@ -30,22 +32,23 @@ app.get("/getFloorData/:floorNumber", async (req: Request, res: Response) => {
   }
 });
 
-
-// app.get("/getFloorData/:floorNumber", async (req: Request, res: Response) => {
-//   const { floorNumber } = req.params;
-//   try {
-//     const floorData = await prisma.room.findMany({
-//       where: {
-//         floorId: parseInt(floorNumber)
-//       },
-//       orderBy: { roomNumber: "asc" },
-//     });
-//     return res.json(floorData);
-//   } catch (err) {
-//     console.log(err);
-//     res.status(500).json({ messge: "サーバーエラー" });
-//   }
-// });
+//部屋の状態を変更するapi
+app.put("/editRoomState/:id", async(req: Request, res: Response)=>{
+const id = Number(req.params.id);
+const {roomState} = req.body
+try{
+  const editedRoomState = await prisma.room.update({
+    where: {id},
+    data: {
+      roomState,
+    }
+  })
+  return res.json(editedRoomState);
+}catch(err){
+  console.log(err);
+  res.status(500).json({ messge: "データを更新できませんでした。" });
+}
+});
 
 
 
