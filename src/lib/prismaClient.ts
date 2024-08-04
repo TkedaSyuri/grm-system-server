@@ -1,17 +1,24 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client';
 import * as dotenv from 'dotenv';
+
 dotenv.config();
 
+// PrismaClient のシングルトンインスタンスを生成する関数
 const prismaClientSingleton = () => {
-  return new PrismaClient()
+  return new PrismaClient();
 }
 
+// グローバル変数の型を宣言
 declare global {
-  var prismaGlobal: undefined | ReturnType<typeof prismaClientSingleton>
+  var prismaGlobal: PrismaClient | undefined;
 }
 
-const prisma = globalThis.prismaGlobal ?? prismaClientSingleton()
+// PrismaClient インスタンスを取得
+const prisma = globalThis.prismaGlobal ?? prismaClientSingleton();
 
-export default prisma
+// グローバル変数にインスタンスを設定（開発環境でのみ）
+if (process.env.NODE_ENV !== 'production') {
+  globalThis.prismaGlobal = prisma;
+}
 
-if (process.env.DATABASE_URL !== 'production') globalThis.prismaGlobal = prisma
+export default prisma;
