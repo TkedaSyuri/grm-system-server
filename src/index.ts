@@ -6,7 +6,7 @@ import http from "http";
 import { Server, Socket } from "socket.io";
 
 const app: Express = express();
-const PORT = 8080;
+const PORT = process.env.PORT || 4000;
 const server: http.Server = http.createServer(app);
 const io = new Server(server, {
   cors: {
