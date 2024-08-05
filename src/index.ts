@@ -4,7 +4,7 @@ import type { Express, Request, Response } from "express";
 import cors from "cors";
 import http from "http";
 import { Server } from "socket.io";
-import * as dotenv from 'dotenv';
+import * as dotenv from "dotenv";
 
 dotenv.config();
 
@@ -12,12 +12,9 @@ const app: Express = express();
 const PORT = process.env.PORT || 10000;
 const server: http.Server = http.createServer(app);
 
-const corsOrigins = "https://gest-room-moniter.vercel.app"
-
-
 const io = new Server(server, {
   cors: {
-    origin: corsOrigins,
+    origin: process.env.CORS_ORIGINS,
     methods: ["GET", "POST"],
   },
 });
