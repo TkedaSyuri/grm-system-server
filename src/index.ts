@@ -12,24 +12,17 @@ const app: Express = express();
 const PORT = process.env.PORT || 10000;
 const server: http.Server = http.createServer(app);
 
-const corsOrigins = process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : ["https://gest-room-moniter.vercel.app"];
+const corsOrigins = ["https://gest-room-moniter.vercel.app"];
 
 const io = new Server(server, {
   cors: {
     origin: corsOrigins,
     methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type"],
-    credentials: true,
   },
 });
 
 app.use(express.json());
-app.use(cors({
-  origin: corsOrigins,
-  methods: ["GET", "POST"],
-  allowedHeaders: ["Content-Type"],
-  credentials: true,
-}));
+app.use(cors());
 
 // 各階のデータを取得するAPI
 app.get("/getFloorData/:floorNumber", async (req: Request, res: Response) => {
