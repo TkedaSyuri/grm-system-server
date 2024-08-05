@@ -20,7 +20,12 @@ const io = new Server(server, {
   },});
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: corsOrigins,
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type"],
+  credentials: true,
+}));
 
 //各階のデータを取得するapi
 app.get("/getFloorData/:floorNumber", async (req: Request, res: Response) => {
