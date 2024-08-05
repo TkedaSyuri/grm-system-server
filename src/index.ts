@@ -8,11 +8,15 @@ import { Server} from "socket.io";
 const app: Express = express();
 const PORT = process.env.PORT || 10000;
 const server: http.Server = http.createServer(app);
+const corsOrigins = ["https://gest-room-moniter.vercel.app"];
+
 const io = new Server(server, {
   cors: {
-    origin: ["https://gest-room-moniter.vercel.app"],
-  },
-});
+    origin: corsOrigins,
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type"],
+    credentials: true,
+  },});
 
 app.use(express.json());
 app.use(cors());
