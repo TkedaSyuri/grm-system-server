@@ -3,7 +3,10 @@ import prisma from "./lib/prismaClient";
 import type { Express, Request, Response } from "express";
 import cors from "cors";
 import http from "http";
-import { Server} from "socket.io";
+import { Server } from "socket.io";
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 const app: Express = express();
 const PORT = process.env.PORT || 10000;
@@ -17,12 +20,18 @@ const io = new Server(server, {
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"],
     credentials: true,
-  },});
+  },
+});
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: corsOrigins,
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type"],
+  credentials: true,
+}));
 
-//各階のデータを取得するapi
+// 各階のデータを取得するAPI
 app.get("/getFloorData/:floorNumber", async (req: Request, res: Response) => {
   const { floorNumber } = req.params;
   try {
@@ -40,11 +49,11 @@ app.get("/getFloorData/:floorNumber", async (req: Request, res: Response) => {
     return res.json(roomData);
   } catch (err) {
     console.log(err);
-    res.status(500).json({ messge: "サーバーエラー" });
+    res.status(500).json({ message: "サーバーエラー" });
   }
 });
 
-//部屋の状態を変更するapi
+// 部屋の状態を変更するAPI
 app.put("/editRoomState/:id", async (req: Request, res: Response) => {
   const id = Number(req.params.id);
   const { roomState } = req.body;
@@ -58,18 +67,17 @@ app.put("/editRoomState/:id", async (req: Request, res: Response) => {
     return res.json(editedRoomState);
   } catch (err) {
     console.log(err);
-    res.status(500).json({ messge: "データを更新できませんでした。" });
+    res.status(500).json({ message: "データを更新できませんでした。" });
   }
 });
 
-//クライアントと通信
+// クライアントと通信
 io.on("connection", (socket) => {
   console.log("クライアントと接続しました");
 
   socket.on("send_message", (data) => {
     console.log(data);
-
-    io.emit("recieved_message", data);
+    io.emit("received_message", data);
   });
 
   socket.on("disconnect", () => {
