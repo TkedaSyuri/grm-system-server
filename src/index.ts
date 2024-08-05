@@ -12,7 +12,7 @@ const app: Express = express();
 const PORT = process.env.PORT || 10000;
 const server: http.Server = http.createServer(app);
 
-const corsOrigins = [`${process.env.CORS_ORIGINS}`] ;
+const corsOrigins = process.env.CORS_ORIGINS ;
 
 const io = new Server(server, {
   cors: {
