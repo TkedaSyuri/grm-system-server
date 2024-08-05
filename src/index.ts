@@ -12,7 +12,7 @@ const app: Express = express();
 const PORT = process.env.PORT || 10000;
 const server: http.Server = http.createServer(app);
 
-const corsOrigins = ["https://gest-room-moniter-c1zdrvd3x-tkedasyuris-projects.vercel.app/"];
+const corsOrigins = ["https://gest-room-moniter.vercel.app"];
 
 const io = new Server(server, {
   cors: {
