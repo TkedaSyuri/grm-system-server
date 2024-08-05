@@ -14,7 +14,7 @@ const server: http.Server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: process.env.CORS_ORIGINS,
+    origin: "https://gest-room-moniter.vercel.app",
     methods: ["GET", "POST"],
   },
 });
