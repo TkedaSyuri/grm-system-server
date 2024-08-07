@@ -12,9 +12,10 @@ const app: Express = express();
 const PORT = process.env.PORT || 10000;
 const server: http.Server = http.createServer(app);
 
+
 const io = new Server(server, {
   cors: {
-    origin: ["https://gest-room-moniter.vercel.app"],
+    origin: process.env.CORS_ORIGIN,
     methods: ["GET", "POST"],
   },
 });
