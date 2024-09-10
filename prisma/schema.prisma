@@ -23,6 +23,7 @@ model Room {
   id         Int    @id @default(autoincrement())
   roomNumber String
   roomState  String
+  is_ConsecRoom Boolean @default(false)
   floor      Floor  @relation(fields: [floorId], references: [floorNumber])
   floorId     Int
 }

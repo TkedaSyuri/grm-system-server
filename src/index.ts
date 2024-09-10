@@ -45,7 +45,7 @@ app.get("/getFloorData/:floorNumber", async (req: Request, res: Response) => {
   }
 });
 
-// 部屋の状態を変更するAPI
+// roomStateの状態を変更するAPI
 app.put("/editRoomState/:id", async (req: Request, res: Response) => {
   const id = Number(req.params.id);
   const { roomState } = req.body;
@@ -62,6 +62,25 @@ app.put("/editRoomState/:id", async (req: Request, res: Response) => {
     res.status(500).json({ message: "データを更新できませんでした。" });
   }
 });
+//isConsecの真偽値変更するapi
+app.put("/isConsec/:id", async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+  const { is_ConsecRoom } = req.body;
+  try {
+    const isConsecData = await prisma.room.update({
+      where: { id },
+      data: {
+        is_ConsecRoom,
+      },
+    });
+    return res.json(isConsecData);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "データを更新できませんでした。" });
+  }
+});
+
+
 
 // クライアントと通信
 io.on("connection", (socket) => {
