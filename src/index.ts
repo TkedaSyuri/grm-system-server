@@ -61,9 +61,27 @@ app.put("/editRoomState/:id", async (req: Request, res: Response) => {
   }
 });
 
+app.get("/isConsec/:id", async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+  const { is_ConsecRoom } = req.body;
+
+  try {
+    const isConsecData = await prisma.room.findUnique({
+      where: { id },
+    });
+    return res.json(isConsecData);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "データを更新できませんでした。" });
+  }
+});
+
+
+
 app.put("/isConsec/:id", async (req: Request, res: Response) => {
   const id = Number(req.params.id);
   const { is_ConsecRoom } = req.body;
+
   try {
     const isConsecData = await prisma.room.update({
       where: { id },
