@@ -23,7 +23,6 @@ const io = new Server(server, {
 app.use(express.json());
 app.use(cors());
 
-// 各階のデータを取得するAPI
 app.get("/getFloorData/:floorNumber", async (req: Request, res: Response) => {
   const { floorNumber } = req.params;
   try {
@@ -45,7 +44,6 @@ app.get("/getFloorData/:floorNumber", async (req: Request, res: Response) => {
   }
 });
 
-// roomStateの状態を変更するAPI
 app.put("/editRoomState/:id", async (req: Request, res: Response) => {
   const id = Number(req.params.id);
   const { roomState } = req.body;
@@ -62,7 +60,7 @@ app.put("/editRoomState/:id", async (req: Request, res: Response) => {
     res.status(500).json({ message: "データを更新できませんでした。" });
   }
 });
-//isConsecの真偽値変更するapi
+
 app.put("/isConsec/:id", async (req: Request, res: Response) => {
   const id = Number(req.params.id);
   const { is_ConsecRoom } = req.body;
@@ -82,7 +80,6 @@ app.put("/isConsec/:id", async (req: Request, res: Response) => {
 
 
 
-// クライアントと通信
 io.on("connection", (socket) => {
   console.log("クライアントと接続しました");
 
