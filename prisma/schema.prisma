@@ -27,3 +27,10 @@ model Room {
   floor      Floor  @relation(fields: [floorId], references: [floorNumber])
   floorId     Int
 }
+
+model Staff {
+  staff_id   Int    @id @default(autoincrement())
+  staff_name String
+  email      String @unique
+  password   String
+}
