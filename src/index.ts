@@ -12,7 +12,6 @@ const app: Express = express();
 const PORT = process.env.PORT || 10000;
 const server: http.Server = http.createServer(app);
 
-
 const io = new Server(server, {
   cors: {
     origin: process.env.CORS_ORIGINS,
@@ -63,7 +62,6 @@ app.put("/editRoomState/:id", async (req: Request, res: Response) => {
 
 app.get("/isConsec/:id", async (req: Request, res: Response) => {
   const id = Number(req.params.id);
-  const { is_ConsecRoom } = req.body;
 
   try {
     const isConsecData = await prisma.room.findUnique({
@@ -76,7 +74,30 @@ app.get("/isConsec/:id", async (req: Request, res: Response) => {
   }
 });
 
-
+app.post("/createStaff", async (req: Request, res: Response) => {
+  const { staffName, email, password } = req.body;
+  const existingStaff = await prisma.staff.findUnique({
+    where: {
+      email: email,
+    },
+  });
+  if (existingStaff) {
+    return res.json(400).json([
+      {
+        message: "このメールは既に登録されています",
+      },
+    ]);
+  } else {
+    const createdStaff = await prisma.staff.create({
+      data: {
+        staff_name: staffName,
+        email: email,
+        password: password,
+      },
+    });
+    return res.json(createdStaff);
+  }
+});
 
 app.put("/isConsec/:id", async (req: Request, res: Response) => {
   const id = Number(req.params.id);
@@ -95,8 +116,6 @@ app.put("/isConsec/:id", async (req: Request, res: Response) => {
     res.status(500).json({ message: "データを更新できませんでした。" });
   }
 });
-
-
 
 io.on("connection", (socket) => {
   console.log("クライアントと接続しました");
