@@ -4,11 +4,10 @@ import type { Express, Request, Response } from "express";
 import cors from "cors";
 import http from "http";
 import { Server } from "socket.io";
-import * as dotenv from "dotenv";
-
-dotenv.config();
-
+import authRoute from "./routers/auth"
+import staffRoute from "./routers/staff"
 const app: Express = express();
+
 const PORT = process.env.PORT || 10000;
 const server: http.Server = http.createServer(app);
 
@@ -21,6 +20,11 @@ const io = new Server(server, {
 
 app.use(express.json());
 app.use(cors());
+
+app.use("/api/auth",authRoute)
+app.use("/api/staff",staffRoute)
+
+
 
 app.get("/getFloorData/:floorNumber", async (req: Request, res: Response) => {
   const { floorNumber } = req.params;
@@ -71,31 +75,6 @@ app.get("/isConsec/:id", async (req: Request, res: Response) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "データを更新できませんでした。" });
-  }
-});
-
-app.post("/createStaff", async (req: Request, res: Response) => {
-  const { staffName, email, password } = req.body;
-  const existingStaff = await prisma.staff.findUnique({
-    where: {
-      email: email,
-    },
-  });
-  if (existingStaff) {
-    return res.json(400).json([
-      {
-        message: "このメールは既に登録されています",
-      },
-    ]);
-  } else {
-    const createdStaff = await prisma.staff.create({
-      data: {
-        staff_name: staffName,
-        email: email,
-        password: password,
-      },
-    });
-    return res.json(createdStaff);
   }
 });
 
