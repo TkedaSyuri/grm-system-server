@@ -18,7 +18,6 @@ router.get("/find", isAuthenticated, async (req: Request, res: Response) => {
       .json({
         staffId: staff?.staff_id,
         staffName: staff?.staff_name,
-        email: staff?.email,
       });
   } catch (err) {
     if (err instanceof Error) {
