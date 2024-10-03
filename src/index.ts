@@ -6,6 +6,7 @@ import http from "http";
 import { Server } from "socket.io";
 import authRoute from "./routers/auth"
 import staffRoute from "./routers/staff"
+import roomRoute from "./routers/room"
 const app: Express = express();
 
 const PORT = process.env.PORT || 10000;
@@ -23,78 +24,8 @@ app.use(cors());
 
 app.use("/api/auth",authRoute)
 app.use("/api/staff",staffRoute)
+app.use("/api/room",roomRoute)
 
-
-
-app.get("/getFloorData/:floorNumber", async (req: Request, res: Response) => {
-  const { floorNumber } = req.params;
-  try {
-    const floorData = await prisma.floor.findUnique({
-      where: {
-        floorNumber: parseInt(floorNumber),
-      },
-      include: {
-        rooms: {
-          orderBy: { id: "asc" },
-        },
-      },
-    });
-    const roomData = floorData?.rooms;
-    return res.json(roomData);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "サーバーエラー" });
-  }
-});
-
-app.put("/editRoomState/:id", async (req: Request, res: Response) => {
-  const id = Number(req.params.id);
-  const { roomState } = req.body;
-  try {
-    const editedRoomState = await prisma.room.update({
-      where: { id },
-      data: {
-        roomState,
-      },
-    });
-    return res.json(editedRoomState);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "データを更新できませんでした。" });
-  }
-});
-
-app.get("/isConsec/:id", async (req: Request, res: Response) => {
-  const id = Number(req.params.id);
-
-  try {
-    const isConsecData = await prisma.room.findUnique({
-      where: { id },
-    });
-    return res.json(isConsecData);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "データを更新できませんでした。" });
-  }
-});
-
-app.put("/isConsec/:id", async (req: Request, res: Response) => {
-  const id = Number(req.params.id);
-  const { is_ConsecRoom } = req.body;
-
-  try {
-    const isConsecData = await prisma.room.update({
-      where: { id },
-      data: {
-        is_ConsecRoom,
-      },
-    });
-    return res.json(isConsecData);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "データを更新できませんでした。" });
-  }
-});
 
 io.on("connection", (socket) => {
   console.log("クライアントと接続しました");
