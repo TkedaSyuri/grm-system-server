@@ -1,6 +1,5 @@
 import express from "express";
-import prisma from "./lib/prismaClient";
-import type { Express, Request, Response } from "express";
+import type { Express} from "express";
 import cors from "cors";
 import http from "http";
 import { Server } from "socket.io";
