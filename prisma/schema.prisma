@@ -34,3 +34,9 @@ model Staff {
   email      String @unique
   password   String
 }
+
+model Task {
+  id Int @id @default(autoincrement())
+  task String
+  is_completed Boolean @default(false)
+}
