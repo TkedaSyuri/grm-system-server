@@ -6,7 +6,7 @@ import { Server } from "socket.io";
 import authRoute from "./routers/auth"
 import staffRoute from "./routers/staff"
 import roomRoute from "./routers/room"
-
+import tasksRoute from "./routers/tasks"
 const app: Express = express();
 
 const PORT = process.env.PORT || 10000;
@@ -25,6 +25,7 @@ app.use(cors());
 app.use("/api/room",roomRoute)
 app.use("/api/auth",authRoute)
 app.use("/api/staff",staffRoute)
+app.use("/api/tasks",tasksRoute)
 
 
 io.on("connection", (socket) => {
