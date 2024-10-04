@@ -27,14 +27,14 @@ router.post("/register", async (req: Request, res: Response) => {
         },
       ]);
     }
-    const createdStaff = await prisma.staff.create({
+     await prisma.staff.create({
       data: {
         staff_name: staffName,
         email: email,
         password: hashedPassword,
       },
     });
-    return res.json(createdStaff);
+    return res.status(200).json({message: "スタッフの登録に成功しました"});
   });
   
   router.post("/login", async (req: Request, res: Response) => {
@@ -47,7 +47,7 @@ router.post("/register", async (req: Request, res: Response) => {
         .status(400)
         .json({ error: "メールアドレスかパスワードが間違っています。" });
     }
-  
+
     const isPasswordValid = await bcrypt.compare(password, staff.password);
     if (!isPasswordValid) {
       return res.status(401).json({ error: "パスワードが間違っています。" });

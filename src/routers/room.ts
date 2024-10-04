@@ -23,7 +23,7 @@ router.get("/get/floor/:floorNumber", async (req: Request, res: Response) => {
       return res.json(roomData);
     } catch (err) {
       console.log(err);
-      res.status(500).json({ message: "サーバーエラー" });
+      res.status(500).json({ message: "データを取得できませんでした" });
     }
   });
 
@@ -31,13 +31,13 @@ router.get("/get/floor/:floorNumber", async (req: Request, res: Response) => {
     const id = Number(req.params.id);
     const { roomState } = req.body;
     try {
-      const editedRoomState = await prisma.room.update({
+      await prisma.room.update({
         where: { id },
         data: {
           roomState,
         },
       });
-      return res.json(editedRoomState);
+      return res.status(200).json({message: "データの更新に成功しました"});
     } catch (err) {
       console.log(err);
       res.status(500).json({ message: "データを更新できませんでした。" });
@@ -46,7 +46,6 @@ router.get("/get/floor/:floorNumber", async (req: Request, res: Response) => {
   
  router.get("/get/is-consecutive-nights/:id", async (req: Request, res: Response) => {
     const id = Number(req.params.id);
-  
     try {
       const isConsecData = await prisma.room.findUnique({
         where: { id },
@@ -54,7 +53,7 @@ router.get("/get/floor/:floorNumber", async (req: Request, res: Response) => {
       return res.json(isConsecData);
     } catch (err) {
       console.log(err);
-      res.status(500).json({ message: "データを更新できませんでした。" });
+      res.status(500).json({ message: "データを取得できませんでした" });
     }
   });
   
@@ -62,13 +61,13 @@ router.get("/get/floor/:floorNumber", async (req: Request, res: Response) => {
     const id = Number(req.params.id);
     const { isConsecRoom } = req.body;
     try {
-      const isConsecData = await prisma.room.update({
+      await prisma.room.update({
         where: { id },
         data: {
           is_ConsecRoom:isConsecRoom,
         },
       });
-      return res.json(isConsecData);
+      return res.status(200).json({message: "データの更新に成功しました"});
     } catch (err) {
       console.log(err);
       res.status(500).json({ message: "データを更新できませんでした。" });

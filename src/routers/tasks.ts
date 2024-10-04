@@ -22,7 +22,7 @@ router.post("/create-task", async (req: Request, res: Response) => {
         is_completed: isCompleted,
       },
     });
-    return res.json(createdTodo);
+    return res.status(200).json({message: "タスクの作成に成功しました"});
   } catch (err) {
     res.status(400).json(err);
   }
@@ -39,7 +39,17 @@ router.put("/edit-task/:id", async (req: Request, res: Response) => {
         is_completed: isCompleted,
       },
     });
-    return res.json(editedTodo);
+    return res.status(200).json({message: "タスクの編集に成功しました"});
+  } catch (err) {
+    res.status(400).json(err);
+  }
+});
+
+router.delete("/delete-task/:id", async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+  try {
+    await prisma.task.delete({ where: { id } });
+    return res.status(200).json({message: "タスクの削除に成功しました"});
   } catch (err) {
     res.status(400).json(err);
   }

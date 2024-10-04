@@ -13,22 +13,17 @@ router.get("/find", isAuthenticated, async (req: Request, res: Response) => {
     if (!staff) {
       res.status(404).json({ error: "スタッフが見つかりませんでした" });
     }
-    res
-      .status(200)
-      .json({
-        staffId: staff?.staff_id,
-        staffName: staff?.staff_name,
-      });
+    res.json({
+      staffId: staff?.staff_id,
+      staffName: staff?.staff_name,
+    });
   } catch (err) {
     if (err instanceof Error) {
-        res.status(500).json({ error: err.message });
-      } else {
-        res.status(500).json({ error: "内部サーバーエラー" });
-      }
+      res.status(500).json({ error: err.message });
+    } else {
+      res.status(500).json({ error: "サーバーエラー" });
+    }
   }
 });
 
 export default router;
-
-
-
