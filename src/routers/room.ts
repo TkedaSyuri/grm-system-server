@@ -7,11 +7,11 @@ const router = express.Router();
 
 
 router.get("/get/floor/:floorNumber", async (req: Request, res: Response) => {
-    const { floorNumber } = req.params;
+    const  floorNumber  = Number(req.params.floorNumber);
     try {
       const floorData = await prisma.floor.findUnique({
         where: {
-          floorNumber: parseInt(floorNumber),
+          floorNumber: floorNumber,
         },
         include: {
           rooms: {
@@ -60,13 +60,12 @@ router.get("/get/floor/:floorNumber", async (req: Request, res: Response) => {
   
  router.put("/edit/is-consecutive-nights/:id", async (req: Request, res: Response) => {
     const id = Number(req.params.id);
-    const { is_ConsecRoom } = req.body;
-  
+    const { isConsecRoom } = req.body;
     try {
       const isConsecData = await prisma.room.update({
         where: { id },
         data: {
-          is_ConsecRoom,
+          is_ConsecRoom:isConsecRoom,
         },
       });
       return res.json(isConsecData);
