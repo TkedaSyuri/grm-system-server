@@ -48,7 +48,8 @@ router.get("/get/floor/:floorNumber", async (req: Request, res: Response) => {
     const id = Number(req.params.id);
     try {
       const isConsecData = await prisma.room.findUnique({
-        where: { id },
+        where: { id},
+        select: {is_ConsecRoom:true}
       });
       return res.json(isConsecData);
     } catch (err) {
@@ -61,13 +62,13 @@ router.get("/get/floor/:floorNumber", async (req: Request, res: Response) => {
     const id = Number(req.params.id);
     const { isConsecRoom } = req.body;
     try {
-      await prisma.room.update({
+    await prisma.room.update({
         where: { id },
         data: {
           is_ConsecRoom:isConsecRoom,
         },
       });
-      return res.status(200).json({message: "データの更新に成功しました"});
+      return res.status(200).json({message: "データの更新に成功しました"})
     } catch (err) {
       console.log(err);
       res.status(500).json({ message: "データを更新できませんでした。" });
