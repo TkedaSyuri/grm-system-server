@@ -6,7 +6,6 @@ import { Server } from "socket.io";
 import authRoute from "./routers/auth"
 import staffRoute from "./routers/staff"
 import roomRoute from "./routers/room"
-import taskRoute from "./routers/tasks"
 
 const app: Express = express();
 
