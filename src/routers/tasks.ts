@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get("/all-tasks", async(req: Request, res: Response) => {
   try {
-    const allTasks = await prisma.task.findMany({ orderBy: { id: "asc" } });
+    const allTasks = await prisma.task.findMany({ orderBy: { id: "asc" } }); 
     return res.json(allTasks);
   } catch (err) {
     res.status(400).json(err);
@@ -28,15 +28,14 @@ router.post("/create-task", async (req: Request, res: Response) => {
   }
 });
 
-router.put("/edit-task/:id", async (req: Request, res: Response) => {
+router.put("/edit-completed-task/:id", async (req: Request, res: Response) => {
   const id = Number(req.params.id);
-  const { task, isCompleted } = req.body;
+  const { isCompleted} = req.body;
   try {
    await prisma.task.update({
       where: { id },
       data: {
-        task: task,
-        is_completed: isCompleted,
+        is_completed: isCompleted
       },
     });
     return res.status(200).json({message: "タスクの編集に成功しました"});
