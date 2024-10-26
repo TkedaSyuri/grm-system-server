@@ -74,6 +74,22 @@ router.get("/get/floor/:floorNumber", async (req: Request, res: Response) => {
       res.status(500).json({ message: "データを更新できませんでした。" });
     }
   });
+
+ router.put("/edit/consec-false/:id", async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+    try {
+    await prisma.room.update({
+        where: { id },
+        data: {
+          is_ConsecRoom:false,
+        },
+      });
+      return res.status(200).json({message: "データの更新に成功しました"})
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: "データを更新できませんでした。" });
+    }
+  });
   
 
   export default router;
