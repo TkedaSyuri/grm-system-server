@@ -8,14 +8,14 @@ const router = express.Router();
 router.get("/find", isAuthenticated, async (req: Request, res: Response) => {
   try {
     const staff = await prisma.staff.findUnique({
-      where: { staff_id: req.staffId },
+      where: { staffId: req.staffId },
     });
     if (!staff) {
       res.status(404).json({ error: "スタッフが見つかりませんでした" });
     }
     res.json({
-      staffId: staff?.staff_id,
-      staffName: staff?.staff_name,
+      staffId: staff?.staffId,
+      staffName: staff?.staffName,
     });
   } catch (err) {
     if (err instanceof Error) {

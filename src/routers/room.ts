@@ -49,7 +49,7 @@ router.get("/get/floor/:floorNumber", async (req: Request, res: Response) => {
     try {
       const isConsecData = await prisma.room.findUnique({
         where: { id},
-        select: {is_ConsecRoom:true}
+        select: {isConsecutiveNight:true}
       });
       return res.json(isConsecData);
     } catch (err) {
@@ -65,7 +65,7 @@ router.get("/get/floor/:floorNumber", async (req: Request, res: Response) => {
     await prisma.room.update({
         where: { id },
         data: {
-          is_ConsecRoom:isConsecRoom,
+          isConsecutiveNight:isConsecRoom,
         },
       });
       return res.status(200).json({message: "データの更新に成功しました"})
@@ -81,7 +81,7 @@ router.get("/get/floor/:floorNumber", async (req: Request, res: Response) => {
     await prisma.room.update({
         where: { id },
         data: {
-          is_ConsecRoom:false,
+          isConsecutiveNight:false,
         },
       });
       return res.status(200).json({message: "データの更新に成功しました"})

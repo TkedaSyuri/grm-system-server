@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get("/chats", async(req: Request, res: Response) => {
   try {
-    const allChats = await prisma.chat.findMany({ orderBy: { created_at: "desc" } }); 
+    const allChats = await prisma.chat.findMany({ orderBy: { createdAt: "desc" } }); 
     return res.status(200).json(allChats);
   } catch (err) {
     res.status(400).json(err);

@@ -17,15 +17,15 @@ model Floor {
 model Room {
   id         Int    @id @default(autoincrement())
   roomNumber String
-  roomState  String
-  is_ConsecRoom Boolean @default(false)
+  roomState  String @default("vacant")
+  isConsecutiveNight Boolean @default(false)
   floor      Floor  @relation(fields: [floorId], references: [floorNumber])
   floorId     Int
 }
 
 model Staff {
-  staff_id   Int    @id @default(autoincrement())
-  staff_name String
+  staffId   Int    @id @default(autoincrement())
+  staffName String
   email      String @unique
   password   String
 }
@@ -33,11 +33,11 @@ model Staff {
 model Task {
   id Int @id @default(autoincrement())
   task String
-  is_completed Boolean @default(false)
+  isCompleted Boolean @default(false)
 }
 
 model Chat {
   id Int @id @default(autoincrement())
   message String
-  created_at DateTime @default(now()) 
+  createdAt DateTime @default(now()) 
 }

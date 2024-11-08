@@ -29,7 +29,7 @@ router.post("/register", async (req: Request, res: Response) => {
     }
      await prisma.staff.create({
       data: {
-        staff_name: staffName,
+        staffName: staffName,
         email: email,
         password: hashedPassword,
       },
@@ -53,7 +53,7 @@ router.post("/register", async (req: Request, res: Response) => {
       return res.status(401).json({ error: "パスワードが間違っています。" });
     }
   
-    const token = jwt.sign({ id: staff.staff_id }, process.env.SECRET_KEY!, {
+    const token = jwt.sign({ id: staff.staffId }, process.env.SECRET_KEY!, {
       expiresIn: "1d",
     });
     return res.json({ token });
