@@ -19,7 +19,7 @@ router.post("/create-task", async (req: Request, res: Response) => {
     await prisma.task.create({
       data: {
         task: task,
-        is_completed: isCompleted,
+        isCompleted: isCompleted,
       },
     });
     return res.status(200).json({message: "タスクの作成に成功しました"});
@@ -35,7 +35,7 @@ router.put("/edit-completed-task/:id", async (req: Request, res: Response) => {
    await prisma.task.update({
       where: { id },
       data: {
-        is_completed: isCompleted
+        isCompleted: isCompleted
       },
     });
     return res.status(200).json({message: "タスクの編集に成功しました"});
