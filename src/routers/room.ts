@@ -58,30 +58,23 @@ router.get("/get/floor/:floorNumber", async (req: Request, res: Response) => {
     }
   });
   
- router.put("/edit/is-consecutive-nights/:id", async (req: Request, res: Response) => {
-    const id = Number(req.params.id);
-    const { isConsecRoom } = req.body;
-    try {
-    await prisma.room.update({
-        where: { id },
-        data: {
-          isConsecutiveNight:isConsecRoom,
-        },
-      });
-      return res.status(200).json({message: "データの更新に成功しました"})
-    } catch (err) {
-      console.log(err);
-      res.status(500).json({ message: "データを更新できませんでした。" });
-    }
-  });
 
- router.put("/edit/consec-false/:id", async (req: Request, res: Response) => {
+ router.put("/is-consecutive-nights/:id", async (req: Request, res: Response) => {
     const id = Number(req.params.id);
     try {
+      const currentIsConsecutiveNight = await prisma.room.findUnique({
+        where: { id },
+        select: { isConsecutiveNight: true }
+      });
+      if (!currentIsConsecutiveNight) {
+        return res.status(404).json({ message: "指定された部屋が見つかりませんでした。" });
+      }
+  
+      const changedIsConsecutiveNight = !currentIsConsecutiveNight?.isConsecutiveNight
     await prisma.room.update({
         where: { id },
         data: {
-          isConsecutiveNight:false,
+          isConsecutiveNight:changedIsConsecutiveNight,
         },
       });
       return res.status(200).json({message: "データの更新に成功しました"})
