@@ -44,19 +44,6 @@ router.get("/get/floor/:floorNumber", async (req: Request, res: Response) => {
     }
   });
   
- router.get("/get/is-consecutive-nights/:id", async (req: Request, res: Response) => {
-    const id = Number(req.params.id);
-    try {
-      const isConsecData = await prisma.room.findUnique({
-        where: { id},
-        select: {isConsecutiveNight:true}
-      });
-      return res.json(isConsecData);
-    } catch (err) {
-      console.log(err);
-      res.status(500).json({ message: "データを取得できませんでした" });
-    }
-  });
   
 
  router.put("/is-consecutive-nights/:id", async (req: Request, res: Response) => {
@@ -66,10 +53,6 @@ router.get("/get/floor/:floorNumber", async (req: Request, res: Response) => {
         where: { id },
         select: { isConsecutiveNight: true }
       });
-      if (!currentIsConsecutiveNight) {
-        return res.status(404).json({ message: "指定された部屋が見つかりませんでした。" });
-      }
-  
       const changedIsConsecutiveNight = !currentIsConsecutiveNight?.isConsecutiveNight
     await prisma.room.update({
         where: { id },
