@@ -22,7 +22,7 @@ router.post("/create-task", async (req: Request, res: Response) => {
         isCompleted: isCompleted,
       },
     });
-    return res.status(200).json({message: "タスクの作成に成功しました"});
+    return res.status(200).json({message: "業務の作成に成功しました"});
   } catch (err) {
     res.status(400).json(err);
   }
@@ -38,7 +38,7 @@ router.put("/edit-completed-task/:id", async (req: Request, res: Response) => {
         isCompleted: isCompleted
       },
     });
-    return res.status(200).json({message: "タスクの編集に成功しました"});
+    return res.status(200).json({message: "業務の編集に成功しました"});
   } catch (err) {
     res.status(400).json(err);
   }
@@ -48,7 +48,7 @@ router.delete("/delete-task/:id", async (req: Request, res: Response) => {
   const id = Number(req.params.id);
   try {
     await prisma.task.delete({ where: { id } });
-    return res.status(200).json({message: "タスクの削除に成功しました"});
+    return res.status(200).json({message: "業務の削除に成功しました"});
   } catch (err) {
     res.status(400).json(err);
   }
@@ -57,7 +57,7 @@ router.delete("/delete-task/:id", async (req: Request, res: Response) => {
 router.delete("/tasks", async (req: Request, res: Response) => {
   try {
     await prisma.task.deleteMany();
-    return res.status(200).json({message: "全てのタスクの削除に成功しました"});
+    return res.status(200).json({message: "全ての業務の削除に成功しました"});
   } catch (err) {
     res.status(400).json(err);
   }
