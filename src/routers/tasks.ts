@@ -1,6 +1,7 @@
 import express from "express";
 import prisma from "../lib/prismaClient";
 import type { Request, Response } from "express";
+import { io } from "..";
 
 const router = express.Router();
 
@@ -22,6 +23,8 @@ router.post("/create-task", async (req: Request, res: Response) => {
         isCompleted: isCompleted,
       },
     });
+    io.emit("updatedTask", { task,isCompleted});
+
     return res.status(200).json({message: "業務の作成に成功しました"});
   } catch (err) {
     res.status(400).json(err);
