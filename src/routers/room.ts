@@ -26,7 +26,6 @@ router.get("/get/floor/:floorNumber", async (req: Request, res: Response) => {
   }
 });
 
-// Express風の例（疑似コード）
 
 router.put("/edit/room-state/:id", async (req: Request, res: Response) => {
   const id = Number(req.params.id);
@@ -39,8 +38,7 @@ router.put("/edit/room-state/:id", async (req: Request, res: Response) => {
       },
     });
 
-    // 更新通知を全クライアントに送る
-    io.emit("roomStateUpdated", { roomId: id, roomState });
+    io.emit("updatedRoomState", { roomId: id, roomState });
 
     return res.status(200).json({ message: "データの更新に成功しました" });
   } catch (err) {
@@ -58,14 +56,21 @@ router.put(
         where: { id },
         select: { isConsecutiveNight: true },
       });
-      const changedIsConsecutiveNight =
-        !currentIsConsecutiveNight?.isConsecutiveNight;
-      await prisma.room.update({
+      const changedIsConsecutiveNight = !currentIsConsecutiveNight?.isConsecutiveNight;
+
+      const updated = await prisma.room.update({
         where: { id },
         data: {
           isConsecutiveNight: changedIsConsecutiveNight,
         },
       });
+
+      // 更新通知を全クライアントに送る
+      io.emit("updatedRoomState", {
+        roomId: updated.id,
+        isConsecutiveNight: updated.isConsecutiveNight,
+      });
+
       return res.status(200).json({ message: "データの更新に成功しました" });
     } catch (err) {
       console.log(err);
