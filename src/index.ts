@@ -3,7 +3,7 @@ import type { Express} from "express";
 import cors from "cors";
 import authRoute from "./routers/auth"
 import staffRoute from "./routers/staff"
-import roomRoute from "./routers/room"
+import roomRoute from "./routers/rooms"
 import tasksRoute from "./routers/tasks"
 import chatsRoute from "./routers/chats"
 import http from "http";
