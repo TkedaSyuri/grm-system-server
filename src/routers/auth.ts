@@ -1,11 +1,8 @@
 import express from "express"
 import prisma from "../lib/prismaClient";
 import type { Request, Response } from "express";
-import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
-dotenv.config();
 
 
 const router = express.Router()
@@ -21,11 +18,11 @@ router.post("/register", async (req: Request, res: Response) => {
       },
     });
     if (existingStaff) {
-      return res.status(400).json([
+      return res.status(400).json(
         {
           message: "このメールは既に登録されています",
         },
-      ]);
+      );
     }
      await prisma.staff.create({
       data: {
@@ -56,8 +53,25 @@ router.post("/register", async (req: Request, res: Response) => {
     const token = jwt.sign({ id: staff.staffId }, process.env.SECRET_KEY!, {
       expiresIn: "1d",
     });
-    return res.json({ token });
+    res.cookie("token", token, {
+    httpOnly: true,   
+    secure: process.env.NODE_ENV === "production", 
+    sameSite: "strict",
+    maxAge: 24 * 60 * 60 * 1000, // 1日
   });
+  res.cookie("token", token);
+  return res.status(200).json({ message: "ログイン成功" });
+  });
+
+//ログアウト
+  router.post("/logout", (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+  });
+  return res.status(200).json({ message: "ログアウトしました" });
+});
 
 
   

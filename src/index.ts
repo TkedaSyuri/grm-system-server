@@ -8,7 +8,13 @@ import tasksRoute from "./routers/tasks"
 import chatsRoute from "./routers/chats"
 import http from "http";
 import { Server } from "socket.io";
+import dotenv from "dotenv"
 
+import cookieParser from "cookie-parser";
+
+
+
+dotenv.config();
 
 const app: Express = express();
 
@@ -16,14 +22,19 @@ const server = http.createServer(app);
 
 export const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: process.env.CORS_ORIGINS,
+    credentials: true,       
   },
 });
 
 const PORT = process.env.PORT || 10000;
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: process.env.CORS_ORIGINS,
+  credentials: true,            
+}));
+app.use(cookieParser());
 
 app.use("/api/room",roomRoute)
 app.use("/api/auth",authRoute)
