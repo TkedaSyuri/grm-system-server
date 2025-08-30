@@ -59,7 +59,6 @@ router.post("/register", async (req: Request, res: Response) => {
     sameSite: "strict",
     maxAge: 24 * 60 * 60 * 1000, // 1日
   });
-  res.cookie("token", token);
   return res.status(200).json({ message: "ログイン成功" });
   });
 
