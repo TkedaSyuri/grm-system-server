@@ -36,7 +36,7 @@ app.use(cors({
 }));
 app.use(cookieParser());
 
-app.use("/api/room",roomRoute)
+app.use("/api/rooms",roomRoute)
 app.use("/api/auth",authRoute)
 app.use("/api/staff",staffRoute)
 app.use("/api/tasks",tasksRoute)

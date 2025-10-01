@@ -5,7 +5,7 @@ import { io } from "..";
 
 const router = express.Router();
 
-router.get("/get/floor/:floorNumber", async (req: Request, res: Response) => {
+router.get("/:floorNumber", async (req: Request, res: Response) => {
   const floorNumber = Number(req.params.floorNumber);
   try {
     const floorData = await prisma.floor.findUnique({
@@ -27,8 +27,8 @@ router.get("/get/floor/:floorNumber", async (req: Request, res: Response) => {
 });
 
 
-router.put("/edit/room-state/:id", async (req: Request, res: Response) => {
-  const id = Number(req.params.id);
+router.put("/:roomId/state", async (req: Request, res: Response) => {
+  const id = Number(req.params.roomId);
   const { roomState } = req.body;
   try {
     await prisma.room.update({
@@ -48,9 +48,9 @@ router.put("/edit/room-state/:id", async (req: Request, res: Response) => {
 });
 
 router.put(
-  "/is-consecutive-nights/:id",
+  "/:roomId/is-consecutive-nights",
   async (req: Request, res: Response) => {
-    const id = Number(req.params.id);
+    const id = Number(req.params.roomId);
     try {
       const currentIsConsecutiveNight = await prisma.room.findUnique({
         where: { id },

@@ -5,7 +5,7 @@ import { io } from "..";
 
 const router = express.Router();
 
-router.get("/chats", async (req: Request, res: Response) => {
+router.get("/", async (req: Request, res: Response) => {
   try {
     const allChats = await prisma.chat.findMany({
       orderBy: { createdAt: "desc" },
@@ -16,7 +16,7 @@ router.get("/chats", async (req: Request, res: Response) => {
   }
 });
 
-router.post("/chat", async (req: Request, res: Response) => {
+router.post("/", async (req: Request, res: Response) => {
   const { message } = req.body;
   try {
     await prisma.chat.create({
@@ -32,8 +32,8 @@ router.post("/chat", async (req: Request, res: Response) => {
   }
 });
 
-router.delete("/chat/:id", async (req: Request, res: Response) => {
-  const id = Number(req.params.id);
+router.delete("/:chatId", async (req: Request, res: Response) => {
+  const id = Number(req.params.chatId);
   try {
     await prisma.chat.delete({ where: { id } });
     io.emit("updatedChat");
@@ -44,7 +44,7 @@ router.delete("/chat/:id", async (req: Request, res: Response) => {
   }
 });
 
-router.delete("/chats", async (req: Request, res: Response) => {
+router.delete("/", async (req: Request, res: Response) => {
   try {
     await prisma.chat.deleteMany();
     io.emit("updatedChat");

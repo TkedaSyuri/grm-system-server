@@ -5,7 +5,7 @@ import { io } from "..";
 
 const router = express.Router();
 
-router.get("/all-tasks", async (req: Request, res: Response) => {
+router.get("/", async (req: Request, res: Response) => {
   try {
     const allTasks = await prisma.task.findMany({ orderBy: { id: "asc" } });
     return res.json(allTasks);
@@ -14,7 +14,7 @@ router.get("/all-tasks", async (req: Request, res: Response) => {
   }
 });
 
-router.post("/create-task", async (req: Request, res: Response) => {
+router.post("/", async (req: Request, res: Response) => {
   const { task, isCompleted } = req.body;
   try {
     await prisma.task.create({
@@ -31,7 +31,7 @@ router.post("/create-task", async (req: Request, res: Response) => {
   }
 });
 
-router.put("/edit-completed-task/:id", async (req: Request, res: Response) => {
+router.put("/:id", async (req: Request, res: Response) => {
   const id = Number(req.params.id);
   const { isCompleted } = req.body;
   try {
@@ -49,7 +49,7 @@ router.put("/edit-completed-task/:id", async (req: Request, res: Response) => {
   }
 });
 
-router.delete("/delete-task/:id", async (req: Request, res: Response) => {
+router.delete("/:id", async (req: Request, res: Response) => {
   const id = Number(req.params.id);
   try {
     await prisma.task.delete({ where: { id } });
@@ -60,7 +60,7 @@ router.delete("/delete-task/:id", async (req: Request, res: Response) => {
   }
 });
 
-router.delete("/tasks", async (req: Request, res: Response) => {
+router.delete("/", async (req: Request, res: Response) => {
   try {
     await prisma.task.deleteMany();
     io.emit("updatedTask");
