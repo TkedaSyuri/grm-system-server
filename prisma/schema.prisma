@@ -40,4 +40,5 @@ model Chat {
   id Int @id @default(autoincrement())
   message String
   createdAt DateTime @default(now()) 
+  sender String @default("housekeeper")
 }
