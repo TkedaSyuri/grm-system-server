@@ -17,14 +17,15 @@ router.get("/", async (req: Request, res: Response) => {
 });
 
 router.post("/", async (req: Request, res: Response) => {
-  const { message } = req.body;
+  const { message,sender } = req.body;
   try {
     await prisma.chat.create({
       data: {
         message: message,
+        sender:sender
       },
     });
-    io.emit("updatedChat", { message });
+    io.emit("updatedChat", { message,sender });
 
     return res.status(200).json({ message: "メッセージの作成に成功しました" });
   } catch (err) {
