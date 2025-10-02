@@ -41,4 +41,5 @@ model Chat {
   message String
   createdAt DateTime @default(now()) 
   sender String @default("housekeeper")
+  floorNumber String?
 }
