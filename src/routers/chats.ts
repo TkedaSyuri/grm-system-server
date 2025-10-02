@@ -18,7 +18,6 @@ router.get("/", async (req: Request, res: Response) => {
 
 router.post("/", async (req: Request, res: Response) => {
   const { message,sender,floorNumber } = req.body;
-      console.log("バックエンド側",floorNumber,typeof floorNumber)
   try {
     await prisma.chat.create({
       data: {
