@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,36 +9,38 @@ datasource db {
 
 model Floor {
   id          Int    @id @default(autoincrement())
-  floorNumber Int @unique
-  rooms        Room[]
+  floorNumber Int    @unique
+  rooms       Room[]
 }
 
 model Room {
-  id         Int    @id @default(autoincrement())
-  roomNumber String
-  roomState  String @default("vacant")
+  id                 Int     @id @default(autoincrement())
+  roomNumber         String
+  roomState          String  @default("vacant")
   isConsecutiveNight Boolean @default(false)
-  floor      Floor  @relation(fields: [floorId], references: [floorNumber])
-  floorId     Int
+  floor              Floor   @relation(fields: [floorId], references: [floorNumber])
+  floorId            Int
 }
 
 model Staff {
   staffId   Int    @id @default(autoincrement())
   staffName String
-  email      String @unique
-  password   String
+  email     String @unique
+  password  String
 }
 
+
 model Task {
-  id Int @id @default(autoincrement())
-  task String
+  id          Int     @id @default(autoincrement())
+  task        String
   isCompleted Boolean @default(false)
+  targetFloor Int @default(0)
 }
 
 model Chat {
-  id Int @id @default(autoincrement())
-  message String
-  createdAt DateTime @default(now()) 
-  sender String @default("housekeeper")
+  id          Int      @id @default(autoincrement())
+  message     String
+  createdAt   DateTime @default(now())
+  sender      String   @default("housekeeper")
   floorNumber String?
 }
