@@ -15,15 +15,15 @@ router.get("/", async (req: Request, res: Response) => {
 });
 
 router.post("/", async (req: Request, res: Response) => {
-  const { task, isCompleted } = req.body;
+  const { task, targetFloor } = req.body;
   try {
     await prisma.task.create({
       data: {
         task: task,
-        isCompleted: isCompleted,
+        targetFloor: targetFloor,
       },
     });
-    io.emit("updatedTask", { task, isCompleted });
+    io.emit("updatedTask", { task, targetFloor });
 
     return res.status(200).json({ message: "業務の作成に成功しました" });
   } catch (err) {
