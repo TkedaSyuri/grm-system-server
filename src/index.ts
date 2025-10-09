@@ -9,8 +9,9 @@ import chatsRoute from "./routers/chats"
 import http from "http";
 import { Server } from "socket.io";
 import dotenv from "dotenv"
-
 import cookieParser from "cookie-parser";
+import { createAdapter } from "@socket.io/redis-adapter";
+import { createClient } from "redis";
 
 
 
@@ -27,7 +28,7 @@ export const io = new Server(server, {
   },
 });
 
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.PORT || 10001;
 
 app.use(express.json());
 app.use(cors({
@@ -42,11 +43,26 @@ app.use("/api/staff",staffRoute)
 app.use("/api/tasks",tasksRoute)
 app.use("/api/chats",chatsRoute)
 
+// Redisクライアントを作成
+const pubClient = createClient({
+  url: process.env.REDIS_URL,
+});
+
+const subClient = pubClient.duplicate();
+
+(async () => {
+  await pubClient.connect();
+  await subClient.connect();
+  io.adapter(createAdapter(pubClient, subClient));
+})();
+
+// Socket.IO に Redis Adapter を設定
 io.on("connection", (socket) => {
-  console.log(`Socket connected: ${socket.id}`);
+  console.log(`Web Socket connected: ${socket.id}`);
   socket.on("disconnect", () => {
-    console.log(`Socket disconnected: ${socket.id}`);
+    console.log(`Web Socket disconnected: ${socket.id}`);
   });
 });
+
 
 server.listen(PORT, () => console.log(`server is running on ${PORT}`));
