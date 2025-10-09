@@ -28,18 +28,19 @@ router.get("/:floorNumber", async (req: Request, res: Response) => {
 
 
 router.put("/:roomId/state", async (req: Request, res: Response) => {
-  const id = Number(req.params.roomId);
+  const roomId = Number(req.params.roomId);
   const { roomState } = req.body;
   try {
     await prisma.room.update({
-      where: { id },
+      where: { id:roomId},
       data: {
         roomState,
       },
+      include: { floor: true }, 
     });
 
-    io.emit("updatedRoomState", { roomId: id, roomState });
-
+    io.emit("updatedRoomState", { roomId: roomId, roomState:roomState });
+　
     return res.status(200).json({ message: "データの更新に成功しました" });
   } catch (err) {
     console.log(err);
