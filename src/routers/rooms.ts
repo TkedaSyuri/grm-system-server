@@ -36,7 +36,6 @@ router.put("/:roomId/state", async (req: Request, res: Response) => {
       data: {
         roomState,
       },
-      include: { floor: true }, 
     });
 
     io.emit("updatedRoomState", { roomId: roomId, roomState:roomState });
