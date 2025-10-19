@@ -28,7 +28,7 @@ export const io = new Server(server, {
   },
 });
 
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.PORT || 10001;
 
 app.use(express.json());
 app.use(cors({
