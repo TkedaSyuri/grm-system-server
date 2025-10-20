@@ -1,17 +1,19 @@
 import express from "express";
 import type { Express} from "express";
 import cors from "cors";
-import authRoute from "./routers/auth"
-import staffRoute from "./routers/staff"
-import roomRoute from "./routers/rooms"
-import tasksRoute from "./routers/tasks"
-import chatsRoute from "./routers/chats"
 import http from "http";
 import { Server } from "socket.io";
 import dotenv from "dotenv"
 import cookieParser from "cookie-parser";
 import { createAdapter } from "@socket.io/redis-adapter";
 import { createClient } from "redis";
+
+import authRoute from "./routers/auth"
+import staffRoute from "./routers/staff"
+import roomRoute from "./routers/rooms"
+import tasksRoute from "./routers/tasks"
+import chatsRoute from "./routers/chats"
+import salesRoute from "./routers/sales"
 
 
 
@@ -42,6 +44,7 @@ app.use("/api/auth",authRoute)
 app.use("/api/staff",staffRoute)
 app.use("/api/tasks",tasksRoute)
 app.use("/api/chats",chatsRoute)
+app.use("/api/sales",salesRoute)
 
 // Redisクライアントを作成
 const pubClient = createClient({
