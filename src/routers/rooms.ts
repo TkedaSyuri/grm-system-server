@@ -5,6 +5,27 @@ import { io } from "..";
 
 const router = express.Router();
 
+router.get("/sales", async (req: Request, res: Response) => {
+  try {
+    const room = await prisma.floor.findMany({
+      include: {
+        rooms: {
+          orderBy: { id: "asc" },
+        },
+      },
+    });
+
+    const allRooms = room.flatMap((room) =>room.rooms);
+
+    return res.json(allRooms);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "データを取得できませんでした" });
+  }
+});
+
+
+
 router.get("/:floorNumber", async (req: Request, res: Response) => {
   const floorNumber = Number(req.params.floorNumber);
   try {

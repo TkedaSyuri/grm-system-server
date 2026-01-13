@@ -13,7 +13,6 @@ import staffRoute from "./routers/staff"
 import roomRoute from "./routers/rooms"
 import tasksRoute from "./routers/tasks"
 import chatsRoute from "./routers/chats"
-import salesRoute from "./routers/sales"
 
 
 
@@ -44,7 +43,6 @@ app.use("/api/auth",authRoute)
 app.use("/api/staff",staffRoute)
 app.use("/api/tasks",tasksRoute)
 app.use("/api/chats",chatsRoute)
-app.use("/api/sales",salesRoute)
 
 // Redisクライアントを作成
 const pubClient = createClient({
